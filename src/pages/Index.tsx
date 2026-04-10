@@ -118,7 +118,7 @@ export default function Index() {
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6 anim">
               <div className="diagonal-stripe w-12 h-6 opacity-80" />
-              <span className="font-display text-volt text-sm tracking-[0.3em] uppercase">Профессиональный электрик</span>
+              <span className="font-display text-volt text-sm tracking-[0.3em] uppercase">Уфа и Республика Башкортостан</span>
             </div>
 
             <h1 className="font-display text-6xl md:text-8xl font-bold text-white leading-none uppercase mb-6 anim"
@@ -129,8 +129,7 @@ export default function Index() {
 
             <p className="font-ibm text-steel-300 text-lg leading-relaxed mb-10 max-w-md anim"
               style={{ animationDelay: "0.2s" }}>
-              Квалифицированный электрик с опытом 12 лет. Работы любой
-              сложности — от розетки до полного монтажа в доме.
+              Профессиональный электрик в Уфе. Выезд в любой район города и Республики Башкортостан. Работы любой сложности — круглосуточно, без выходных.
             </p>
 
             <div className="flex flex-wrap gap-4 anim" style={{ animationDelay: "0.3s" }}>
@@ -260,7 +259,7 @@ export default function Index() {
               {[
                 { icon: "Phone",  label: "Телефон", value: PHONE,                   href: `tel:${PHONE.replace(/\D/g,"")}` },
                 { icon: "Mail",   label: "Email",   value: "elektrik@example.ru",   href: "mailto:elektrik@example.ru" },
-                { icon: "MapPin", label: "Район",   value: "Москва и Мск. область", href: null },
+                { icon: "MapPin", label: "Район",   value: "Уфа и Республика Башкортостан", href: null },
                 { icon: "Clock",  label: "График",  value: "Пн–Вс 8:00–22:00 / аварийно 24/7", href: null },
               ].map((c, i) => (
                 <div key={i} className="flex items-start gap-5 py-5">
