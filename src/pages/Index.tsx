@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const PHONE = "+7 (999) 123-45-67";
+const PHONE = "+7 (917) 340-30-22";
 
 const services = [
   { icon: "Zap",         title: "Монтаж проводки",    desc: "Прокладка кабелей, розетки и выключатели под ключ." },
