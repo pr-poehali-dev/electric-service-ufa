@@ -254,52 +254,25 @@ export default function Index() {
             <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-wide">Контакты</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="space-y-0 anim divide-y divide-steel-600/30">
-              {[
-                { icon: "Phone",  label: "Телефон", value: PHONE,                   href: `tel:${PHONE.replace(/\D/g,"")}` },
-
-                { icon: "MapPin", label: "Район",   value: "Уфа и Республика Башкортостан", href: null },
-                { icon: "Clock",  label: "График",  value: "Круглосуточно, без выходных", href: null },
-              ].map((c, i) => (
-                <div key={i} className="flex items-start gap-5 py-5">
-                  <div className="w-10 h-10 bg-steel-700 border border-volt/30 flex items-center justify-center shrink-0">
-                    <Icon name={c.icon} size={18} className="text-volt" />
-                  </div>
-                  <div>
-                    <div className="font-display text-xs text-steel-400 uppercase tracking-widest mb-1">{c.label}</div>
-                    {c.href
-                      ? <a href={c.href} className="font-ibm text-white hover:text-volt transition-colors text-lg">{c.value}</a>
-                      : <span className="font-ibm text-white text-lg">{c.value}</span>
-                    }
-                  </div>
+          <div className="max-w-lg anim divide-y divide-steel-600/30">
+            {[
+              { icon: "Phone",  label: "Телефон", value: PHONE, href: `tel:${PHONE.replace(/\D/g,"")}` },
+              { icon: "MapPin", label: "Район",   value: "Уфа и Республика Башкортостан", href: null },
+              { icon: "Clock",  label: "График",  value: "Круглосуточно, без выходных", href: null },
+            ].map((c, i) => (
+              <div key={i} className="flex items-start gap-5 py-5">
+                <div className="w-10 h-10 bg-steel-700 border border-volt/30 flex items-center justify-center shrink-0">
+                  <Icon name={c.icon} size={18} className="text-volt" />
                 </div>
-              ))}
-            </div>
-
-            <div className="anim" style={{ animationDelay: "0.15s" }}>
-              <form className="space-y-4" onSubmit={e => e.preventDefault()}>
-                {[
-                  { label: "Ваше имя",  type: "text", placeholder: "Иван Иванов" },
-                  { label: "Телефон",   type: "tel",  placeholder: "+7 (___) ___-__-__" },
-                ].map((f, i) => (
-                  <div key={i}>
-                    <label className="font-display text-xs text-steel-400 uppercase tracking-widest block mb-2">{f.label}</label>
-                    <input type={f.type} placeholder={f.placeholder}
-                      className="w-full bg-steel-700 border border-steel-500 text-white placeholder-steel-400 px-4 py-3 font-ibm focus:outline-none focus:border-volt transition-colors" />
-                  </div>
-                ))}
                 <div>
-                  <label className="font-display text-xs text-steel-400 uppercase tracking-widest block mb-2">Опишите задачу</label>
-                  <textarea rows={4} placeholder="Нужно заменить проводку в квартире..."
-                    className="w-full bg-steel-700 border border-steel-500 text-white placeholder-steel-400 px-4 py-3 font-ibm focus:outline-none focus:border-volt transition-colors resize-none" />
+                  <div className="font-display text-xs text-steel-400 uppercase tracking-widest mb-1">{c.label}</div>
+                  {c.href
+                    ? <a href={c.href} className="font-ibm text-white hover:text-volt transition-colors text-lg">{c.value}</a>
+                    : <span className="font-ibm text-white text-lg">{c.value}</span>
+                  }
                 </div>
-                <button type="submit"
-                  className="w-full bg-volt text-steel-900 font-display font-bold uppercase tracking-widest py-4 hover:bg-volt-light transition-colors glow-volt text-sm">
-                  Отправить заявку
-                </button>
-              </form>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
