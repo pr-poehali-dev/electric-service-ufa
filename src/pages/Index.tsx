@@ -258,7 +258,7 @@ export default function Index() {
             <div className="space-y-0 anim divide-y divide-steel-600/30">
               {[
                 { icon: "Phone",  label: "Телефон", value: PHONE,                   href: `tel:${PHONE.replace(/\D/g,"")}` },
-                { icon: "Mail",   label: "Email",   value: "elektrik@example.ru",   href: "mailto:elektrik@example.ru" },
+
                 { icon: "MapPin", label: "Район",   value: "Уфа и Республика Башкортостан", href: null },
                 { icon: "Clock",  label: "График",  value: "Круглосуточно, без выходных", href: null },
               ].map((c, i) => (
