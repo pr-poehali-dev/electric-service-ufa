@@ -1,84 +1,57 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const PHONE = "+7 (999) 123-45-67";
 
 const services = [
-  {
-    icon: "Zap",
-    title: "Монтаж проводки",
-    desc: "Прокладка кабелей, разводка по помещению, монтаж розеток и выключателей под ключ.",
-  },
-  {
-    icon: "ShieldCheck",
-    title: "Замена щитка",
-    desc: "Установка и замена электрощитовых, подключение автоматов, УЗО и дифавтоматов.",
-  },
-  {
-    icon: "Lightbulb",
-    title: "Освещение",
-    desc: "Дизайнерское и функциональное освещение: точечное, линейное, умный свет.",
-  },
-  {
-    icon: "Home",
-    title: "Ремонт электрики",
-    desc: "Диагностика неисправностей, замена старой проводки, устранение коротких замыканий.",
-  },
-  {
-    icon: "Settings",
-    title: "Умный дом",
-    desc: "Монтаж систем умного дома, автоматика, управление светом и климатом.",
-  },
-  {
-    icon: "Plug",
-    title: "Подключение техники",
-    desc: "Подключение электроплит, бойлеров, кондиционеров и промышленного оборудования.",
-  },
+  { num: "01", title: "Монтаж проводки", desc: "Прокладка кабелей, розетки, выключатели под ключ." },
+  { num: "02", title: "Замена щитка", desc: "Автоматы, УЗО, дифавтоматы — всё по норме." },
+  { num: "03", title: "Освещение", desc: "Точечное, линейное, умный свет — любой сложности." },
+  { num: "04", title: "Ремонт электрики", desc: "Диагностика, замена старой проводки, КЗ." },
+  { num: "05", title: "Умный дом", desc: "Автоматика, управление светом и климатом." },
+  { num: "06", title: "Подключение техники", desc: "Плиты, бойлеры, кондиционеры, оборудование." },
 ];
 
 const portfolio = [
   {
-    img: "https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/ab19fd61-6673-4439-9415-f4167181c4fd.jpg",
-    title: "Монтаж щитка",
-    tag: "Распределительный щит",
+    img: "https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/447b214b-f41e-4d2e-bb02-0c9b6259fa71.jpg",
+    title: "Щиток",
+    year: "2024",
+    tag: "ЖИЛОЙ ДОМ",
   },
   {
-    img: "https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/afb412e1-e909-4dd5-afd0-8169c017d423.jpg",
-    title: "Разводка проводки",
-    tag: "Ремонт квартиры",
+    img: "https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/8d3d9905-d0eb-4a15-b718-7c9d417bfcc1.jpg",
+    title: "Проводка",
+    year: "2024",
+    tag: "КВАРТИРА",
   },
   {
     img: "https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/4be474c2-0870-42ab-9990-1c6a289eb3a7.jpg",
-    title: "Умное освещение",
-    tag: "Умный дом",
+    title: "Умный свет",
+    year: "2023",
+    tag: "ОФИС",
   },
 ];
 
-const stats = [
-  { value: "12+", label: "лет опыта" },
-  { value: "500+", label: "объектов сдано" },
-  { value: "100%", label: "гарантия работ" },
-  { value: "24/7", label: "аварийный выезд" },
+const marqueeItems = [
+  "ЭЛЕКТРИК", "МОНТАЖ", "ПРОВОДКА", "ЩИТОК", "ГАРАНТИЯ", "24/7",
+  "ЭЛЕКТРИК", "МОНТАЖ", "ПРОВОДКА", "ЩИТОК", "ГАРАНТИЯ", "24/7",
 ];
+
+const UNB = { fontFamily: "'Unbounded', sans-serif" };
+const MONO = { fontFamily: "'Space Mono', monospace" };
 
 export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeService, setActiveService] = useState<number | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("show")),
       { threshold: 0.1 }
     );
-    document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-      observer.observe(el);
-    });
-    return () => observer.disconnect();
+    document.querySelectorAll(".anim").forEach(el => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
   const scrollTo = (id: string) => {
@@ -87,66 +60,63 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-steel-900 overflow-x-hidden">
-      {/* NAV */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-steel-900/90 backdrop-blur-md border-b border-steel-600/30">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => scrollTo("hero")}
-          >
-            <div className="w-8 h-8 bg-volt flex items-center justify-center">
-              <Icon name="Zap" size={18} className="text-steel-900" />
-            </div>
-            <span className="font-display font-bold text-lg tracking-wider text-white uppercase">
-              Электрик
-            </span>
-          </div>
+    <div className="min-h-screen bg-[#F0EDE8] text-[#0A0A0A] overflow-x-hidden" style={MONO}>
 
-          <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => scrollTo("services")} className="nav-link">
-              Услуги
-            </button>
-            <button onClick={() => scrollTo("portfolio")} className="nav-link">
-              Портфолио
-            </button>
-            <button onClick={() => scrollTo("contacts")} className="nav-link">
-              Контакты
-            </button>
+      {/* NAV */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F0EDE8] border-b-[3px] border-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-14 flex items-center justify-between">
+          <button onClick={() => scrollTo("hero")} className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#E63022] border-2 border-[#0A0A0A] flex items-center justify-center">
+              <Icon name="Zap" size={16} className="text-[#F0EDE8]" />
+            </div>
+            <span style={UNB} className="font-black text-sm tracking-tight uppercase">ЭЛЕКТРИК</span>
+          </button>
+
+          <div className="hidden md:flex items-center">
+            {(["services", "portfolio", "contacts"] as const).map((id, i) => (
+              <button
+                key={id}
+                onClick={() => scrollTo(id)}
+                className="px-5 py-1 border-l-[2px] border-[#0A0A0A] text-xs uppercase tracking-widest hover:bg-[#0A0A0A] hover:text-[#F0EDE8] transition-colors"
+                style={UNB}
+              >
+                {["Услуги", "Портфолио", "Контакты"][i]}
+              </button>
+            ))}
           </div>
 
           <a
             href={`tel:${PHONE.replace(/\D/g, "")}`}
-            className="hidden md:flex items-center gap-2 bg-volt text-steel-900 font-display font-semibold text-sm px-4 py-2 uppercase tracking-wider hover:bg-volt-light transition-colors glow-volt"
+            className="hidden md:flex items-center gap-2 bg-[#E63022] text-[#F0EDE8] px-4 py-2 text-xs uppercase tracking-wider brutal-btn-red"
+            style={UNB}
           >
-            <Icon name="Phone" size={15} />
+            <Icon name="Phone" size={13} />
             Позвонить
           </a>
 
-          <button
-            className="md:hidden text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <Icon name={menuOpen ? "X" : "Menu"} size={24} />
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            <Icon name={menuOpen ? "X" : "Menu"} size={22} />
           </button>
         </div>
 
         {menuOpen && (
-          <div className="md:hidden bg-steel-800 border-t border-steel-600/30 px-6 py-4 flex flex-col gap-4">
-            <button onClick={() => scrollTo("services")} className="nav-link text-left">
-              Услуги
-            </button>
-            <button onClick={() => scrollTo("portfolio")} className="nav-link text-left">
-              Портфолио
-            </button>
-            <button onClick={() => scrollTo("contacts")} className="nav-link text-left">
-              Контакты
-            </button>
+          <div className="md:hidden border-t-[3px] border-[#0A0A0A] bg-[#F0EDE8] px-4 py-4 flex flex-col">
+            {(["services", "portfolio", "contacts"] as const).map((id, i) => (
+              <button
+                key={id}
+                onClick={() => scrollTo(id)}
+                className="border-b-2 border-[#0A0A0A] py-3 text-left text-xs uppercase tracking-widest"
+                style={UNB}
+              >
+                {["— Услуги", "— Портфолио", "— Контакты"][i]}
+              </button>
+            ))}
             <a
               href={`tel:${PHONE.replace(/\D/g, "")}`}
-              className="flex items-center gap-2 bg-volt text-steel-900 font-display font-semibold text-sm px-4 py-2 uppercase tracking-wider w-fit glow-volt"
+              className="mt-4 flex items-center gap-2 bg-[#E63022] text-[#F0EDE8] px-4 py-3 text-xs uppercase tracking-wider w-fit brutal-btn-red"
+              style={UNB}
             >
-              <Icon name="Phone" size={15} />
+              <Icon name="Phone" size={13} />
               Позвонить
             </a>
           </div>
@@ -154,115 +124,105 @@ export default function Index() {
       </nav>
 
       {/* HERO */}
-      <section id="hero" className="relative min-h-screen flex items-center pt-16 grid-texture">
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute top-20 right-0 w-1/2 h-full opacity-10"
-            style={{ background: "radial-gradient(ellipse at 80% 50%, #F5C518 0%, transparent 60%)" }}
-          />
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-volt/40 to-transparent" />
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px bg-gradient-to-b from-transparent via-volt/10 to-transparent"
-              style={{ left: `${10 + i * 16}%`, height: "100%" }}
-            />
-          ))}
-        </div>
+      <section id="hero" className="pt-14 min-h-screen flex flex-col">
+        <div className="flex-1 max-w-7xl mx-auto px-4 md:px-8 w-full grid md:grid-cols-2 border-b-[3px] border-[#0A0A0A]">
 
-        <div className="relative max-w-6xl mx-auto px-6 py-20">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-6 animate-on-scroll">
-              <div className="diagonal-stripe w-12 h-6 opacity-80" />
-              <span className="font-display text-volt text-sm tracking-[0.3em] uppercase">
-                Профессиональный электрик
-              </span>
+          <div className="md:border-r-[3px] border-[#0A0A0A] py-16 md:py-24 flex flex-col justify-between">
+            <div>
+              <div className="inline-block border-[3px] border-[#0A0A0A] px-3 py-1 text-xs uppercase tracking-widest mb-8 anim">
+                Москва / Мск. область
+              </div>
+              <h1
+                className="font-black leading-none uppercase mb-8 anim"
+                style={{ ...UNB, fontSize: "clamp(52px,9vw,120px)", animationDelay: "0.1s" }}
+              >
+                ЭЛЕК<br />
+                <span className="text-[#E63022]">ТРИК</span>
+              </h1>
+              <p className="text-sm leading-relaxed text-[#444] max-w-sm anim" style={{ animationDelay: "0.15s" }}>
+                Профессиональный монтаж электрики любой сложности.
+                Опыт 12 лет. Гарантия на все виды работ.
+              </p>
             </div>
 
-            <h1
-              className="font-display text-5xl md:text-7xl font-bold text-white leading-none uppercase mb-6 animate-on-scroll"
-              style={{ animationDelay: "0.1s" }}
-            >
-              Электромонтаж{" "}
-              <span className="text-volt text-glow block">под ключ</span>
-            </h1>
-
-            <p
-              className="font-ibm text-steel-300 text-lg md:text-xl leading-relaxed mb-10 max-w-xl animate-on-scroll"
-              style={{ animationDelay: "0.2s" }}
-            >
-              Квалифицированный электрик с опытом более 12 лет. Работы любой
-              сложности — от розетки до полного монтажа электрики в доме.
-            </p>
-
-            <div
-              className="flex flex-wrap gap-4 animate-on-scroll"
-              style={{ animationDelay: "0.3s" }}
-            >
+            <div className="flex flex-wrap gap-3 mt-10 anim" style={{ animationDelay: "0.2s" }}>
               <a
                 href={`tel:${PHONE.replace(/\D/g, "")}`}
-                className="flex items-center gap-3 bg-volt text-steel-900 font-display font-bold text-base px-8 py-4 uppercase tracking-wider hover:bg-volt-light transition-all glow-volt hover:scale-105 duration-200"
+                className="flex items-center gap-2 bg-[#E63022] text-[#F0EDE8] px-6 py-4 text-sm uppercase tracking-wider brutal-btn-red"
+                style={UNB}
               >
-                <Icon name="Phone" size={20} />
-                Позвонить сейчас
+                <Icon name="Phone" size={16} />
+                {PHONE}
               </a>
               <button
                 onClick={() => scrollTo("services")}
-                className="flex items-center gap-3 border border-steel-500 text-white font-display font-medium text-base px-8 py-4 uppercase tracking-wider hover:border-volt hover:text-volt transition-all duration-200"
+                className="flex items-center gap-2 bg-[#F0EDE8] text-[#0A0A0A] px-6 py-4 text-sm uppercase tracking-wider brutal-btn"
+                style={UNB}
               >
-                Наши услуги
-                <Icon name="ArrowRight" size={18} />
+                Услуги <Icon name="ArrowDown" size={16} />
               </button>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden min-h-[320px] md:min-h-0">
+            <img
+              src="https://cdn.poehali.dev/projects/7c594f1c-fb91-4640-b559-b875926c87be/files/447b214b-f41e-4d2e-bb02-0c9b6259fa71.jpg"
+              alt="Монтаж щитка"
+              className="w-full h-full object-cover grayscale contrast-110"
+            />
+            <div className="absolute inset-0 bg-[#0A0A0A]/20 mix-blend-multiply" />
+            <div className="absolute bottom-0 right-0 bg-[#F5C518] border-l-[3px] border-t-[3px] border-[#0A0A0A] px-4 py-2">
+              <span className="text-xs font-black uppercase tracking-widest" style={UNB}>500+ объектов</span>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 bg-steel-800/80 backdrop-blur-sm border-t border-steel-600/40">
-          <div className="max-w-6xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((s, i) => (
-              <div key={i} className="text-center">
-                <div className="font-display text-2xl font-bold text-volt">{s.value}</div>
-                <div className="font-ibm text-xs text-steel-400 uppercase tracking-wider mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto px-4 md:px-8 w-full grid grid-cols-2 md:grid-cols-4 border-b-[3px] border-[#0A0A0A]">
+          {[
+            { v: "12+", l: "лет опыта" },
+            { v: "500+", l: "объектов" },
+            { v: "100%", l: "гарантия" },
+            { v: "24/7", l: "аварийный" },
+          ].map((s, i) => (
+            <div key={i} className="py-6 px-4 border-r-[2px] border-[#0A0A0A] last:border-r-0 text-center">
+              <div className="text-3xl font-black leading-none" style={UNB}>{s.v}</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#666] mt-1">{s.l}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section id="services" className="py-24 bg-steel-800 relative">
-        <div className="absolute inset-0 grid-texture opacity-50" />
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="mb-16 animate-on-scroll">
-            <span className="section-line mb-4" />
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-wide">
-              Наши услуги
-            </h2>
-            <p className="font-ibm text-steel-300 mt-4 max-w-lg">
-              Полный спектр электромонтажных работ для жилых и коммерческих объектов
-            </p>
-          </div>
+      {/* MARQUEE */}
+      <div className="overflow-hidden border-b-[3px] border-[#0A0A0A] bg-[#E63022] py-3">
+        <div className="flex animate-marquee">
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <span key={i} className="text-[#F0EDE8] text-xs font-black uppercase tracking-[0.3em] mx-6 shrink-0" style={UNB}>
+              {item} <span className="opacity-50 mx-2">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-steel-600/20">
+      {/* SERVICES */}
+      <section id="services" className="border-b-[3px] border-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="py-12 border-b-[3px] border-[#0A0A0A] anim">
+            <h2 className="text-4xl md:text-6xl font-black uppercase" style={UNB}>УСЛУГИ</h2>
+          </div>
+          <div className="divide-y-[2px] divide-[#0A0A0A]">
             {services.map((s, i) => (
               <div
                 key={i}
-                className="animate-on-scroll bg-steel-900 p-8 group hover:bg-steel-700/50 transition-colors duration-300 border border-steel-600/20 hover:border-volt/30"
-                style={{ animationDelay: `${i * 0.08}s` }}
+                className={`anim flex items-start gap-6 py-6 px-2 cursor-pointer transition-colors duration-150 group ${activeService === i ? "bg-[#F5C518]" : "hover:bg-[#0A0A0A] hover:text-[#F0EDE8]"}`}
+                style={{ animationDelay: `${i * 0.06}s` }}
+                onClick={() => setActiveService(activeService === i ? null : i)}
               >
-                <div className="w-12 h-12 bg-steel-700 group-hover:bg-volt transition-colors duration-300 flex items-center justify-center mb-6">
-                  <Icon
-                    name={s.icon}
-                    size={22}
-                    className="text-volt group-hover:text-steel-900 transition-colors duration-300"
-                  />
+                <span className="text-xs text-[#999] group-hover:text-[#666] pt-1 shrink-0 w-8" style={MONO}>{s.num}</span>
+                <div className="flex-1">
+                  <h3 className="text-lg md:text-2xl font-black uppercase" style={UNB}>{s.title}</h3>
+                  {activeService === i && <p className="mt-2 text-sm text-[#333]">{s.desc}</p>}
                 </div>
-                <h3 className="font-display text-xl font-semibold text-white uppercase tracking-wide mb-3">
-                  {s.title}
-                </h3>
-                <p className="font-ibm text-steel-400 text-sm leading-relaxed">
-                  {s.desc}
-                </p>
+                <Icon name={activeService === i ? "Minus" : "Plus"} size={18} className="shrink-0 mt-1" />
               </div>
             ))}
           </div>
@@ -270,47 +230,29 @@ export default function Index() {
       </section>
 
       {/* PORTFOLIO */}
-      <section id="portfolio" className="py-24 bg-steel-900 relative">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="mb-16 animate-on-scroll">
-            <span className="section-line mb-4" />
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-wide">
-              Портфолио
-            </h2>
-            <p className="font-ibm text-steel-300 mt-4 max-w-lg">
-              Реальные работы — реальный результат
-            </p>
+      <section id="portfolio" className="border-b-[3px] border-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="py-12 border-b-[3px] border-[#0A0A0A] anim">
+            <h2 className="text-4xl md:text-6xl font-black uppercase" style={UNB}>ПОРТФОЛИО</h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y-[3px] md:divide-y-0 md:divide-x-[3px] divide-[#0A0A0A]">
             {portfolio.map((p, i) => (
-              <div
-                key={i}
-                className="animate-on-scroll group relative overflow-hidden border border-steel-600/30 hover:border-volt/50 transition-all duration-300"
-                style={{ animationDelay: `${i * 0.12}s` }}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={p.img}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+              <div key={i} className="anim group" style={{ animationDelay: `${i * 0.1}s` }}>
+                <div className="relative overflow-hidden border-b-[3px] border-[#0A0A0A]">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={p.img}
+                      alt={p.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute top-3 left-3 bg-[#F0EDE8] border-[2px] border-[#0A0A0A] px-2 py-0.5">
+                    <span className="text-[10px] font-black uppercase tracking-widest" style={UNB}>{p.tag}</span>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-steel-900 via-transparent to-transparent opacity-80" />
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <span className="inline-block font-display text-xs text-volt uppercase tracking-widest mb-1">
-                    {p.tag}
-                  </span>
-                  <h3 className="font-display text-lg font-semibold text-white uppercase">
-                    {p.title}
-                  </h3>
-                </div>
-                <div className="absolute top-4 right-4 w-8 h-8 bg-volt/0 group-hover:bg-volt transition-colors duration-300 flex items-center justify-center">
-                  <Icon
-                    name="ArrowUpRight"
-                    size={16}
-                    className="text-steel-900 opacity-0 group-hover:opacity-100 transition-opacity"
-                  />
+                <div className="p-5 flex items-center justify-between">
+                  <h3 className="text-xl font-black uppercase" style={UNB}>{p.title}</h3>
+                  <span className="text-xs text-[#999]">{p.year}</span>
                 </div>
               </div>
             ))}
@@ -318,104 +260,83 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA BAND */}
-      <section className="py-16 bg-volt relative overflow-hidden">
-        <div className="absolute inset-0 diagonal-stripe" style={{ opacity: 0.15 }} />
-        <div className="relative max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* CTA */}
+      <section className="bg-[#0A0A0A] border-b-[3px] border-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-steel-900 uppercase">
-              Нужен электрик?
+            <h2 className="text-4xl md:text-6xl font-black uppercase text-[#F0EDE8] leading-none" style={UNB}>
+              НУЖЕН<br /><span className="text-[#F5C518]">ЭЛЕКТРИК?</span>
             </h2>
-            <p className="font-ibm text-steel-700 mt-2">
-              Звоните — выезд в день обращения, бесплатная оценка работ
-            </p>
+            <p className="text-[#888] text-sm mt-4">Выезд в день обращения. Смета бесплатно.</p>
           </div>
           <a
             href={`tel:${PHONE.replace(/\D/g, "")}`}
-            className="flex items-center gap-3 bg-steel-900 text-volt font-display font-bold text-lg px-10 py-5 uppercase tracking-wider hover:bg-steel-800 transition-colors shrink-0"
+            className="flex items-center gap-3 bg-[#E63022] text-[#F0EDE8] px-8 py-5 text-base uppercase tracking-wider brutal-btn-red shrink-0"
+            style={UNB}
           >
-            <Icon name="Phone" size={22} />
+            <Icon name="Phone" size={20} />
             {PHONE}
           </a>
         </div>
       </section>
 
       {/* CONTACTS */}
-      <section id="contacts" className="py-24 bg-steel-800 relative">
-        <div className="absolute inset-0 grid-texture opacity-30" />
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="mb-16 animate-on-scroll">
-            <span className="section-line mb-4" />
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-wide">
-              Контакты
-            </h2>
+      <section id="contacts" className="border-b-[3px] border-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="py-12 border-b-[3px] border-[#0A0A0A] anim">
+            <h2 className="text-4xl md:text-6xl font-black uppercase" style={UNB}>КОНТАКТЫ</h2>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x-[3px] divide-[#0A0A0A]">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="space-y-8 animate-on-scroll">
+            <div className="py-10 md:pr-10 anim divide-y-[2px] divide-[#0A0A0A]">
               {[
-                { icon: "Phone", label: "Телефон", value: PHONE, href: `tel:${PHONE.replace(/\D/g, "")}` },
-                { icon: "Mail", label: "Email", value: "elektrik@example.ru", href: "mailto:elektrik@example.ru" },
-                { icon: "MapPin", label: "Район работ", value: "Москва и Московская область", href: null },
-                { icon: "Clock", label: "График", value: "Пн–Вс: 8:00 – 22:00 (аварийно 24/7)", href: null },
+                { icon: "Phone", label: "ТЕЛЕФОН", value: PHONE, href: `tel:${PHONE.replace(/\D/g, "")}` },
+                { icon: "Mail", label: "EMAIL", value: "elektrik@example.ru", href: "mailto:elektrik@example.ru" },
+                { icon: "MapPin", label: "РАЙОН", value: "Москва и Мск. область", href: null },
+                { icon: "Clock", label: "ЧАСЫ", value: "Пн–Вс 8:00–22:00 / Аварийно 24/7", href: null },
               ].map((c, i) => (
-                <div key={i} className="flex items-start gap-5">
-                  <div className="w-10 h-10 bg-steel-700 border border-volt/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon name={c.icon} size={18} className="text-volt" />
-                  </div>
+                <div key={i} className="py-5 flex items-start gap-4">
+                  <Icon name={c.icon} size={16} className="mt-0.5 shrink-0" />
                   <div>
-                    <div className="font-display text-xs text-steel-400 uppercase tracking-widest mb-1">
-                      {c.label}
-                    </div>
-                    {c.href ? (
-                      <a href={c.href} className="font-ibm text-white hover:text-volt transition-colors text-lg">
-                        {c.value}
-                      </a>
-                    ) : (
-                      <span className="font-ibm text-white text-lg">{c.value}</span>
-                    )}
+                    <div className="text-[10px] uppercase tracking-widest text-[#888] mb-1">{c.label}</div>
+                    {c.href
+                      ? <a href={c.href} className="text-sm hover:text-[#E63022] transition-colors">{c.value}</a>
+                      : <span className="text-sm">{c.value}</span>
+                    }
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="animate-on-scroll" style={{ animationDelay: "0.2s" }}>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <div className="py-10 md:pl-10 anim" style={{ animationDelay: "0.15s" }}>
+              <form className="space-y-4" onSubmit={e => e.preventDefault()}>
+                {[
+                  { label: "ИМЯ", type: "text", placeholder: "Иван Иванов" },
+                  { label: "ТЕЛЕФОН", type: "tel", placeholder: "+7 (___) ___-__-__" },
+                ].map((f, i) => (
+                  <div key={i}>
+                    <label className="block text-[10px] uppercase tracking-widest mb-2 text-[#888]">{f.label}</label>
+                    <input
+                      type={f.type}
+                      placeholder={f.placeholder}
+                      className="w-full bg-transparent border-[2px] border-[#0A0A0A] px-4 py-3 text-sm focus:outline-none focus:border-[#E63022] transition-colors placeholder-[#bbb]"
+                    />
+                  </div>
+                ))}
                 <div>
-                  <label className="font-display text-xs text-steel-400 uppercase tracking-widest block mb-2">
-                    Ваше имя
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Иван Иванов"
-                    className="w-full bg-steel-700 border border-steel-500 text-white placeholder-steel-400 px-4 py-3 font-ibm focus:outline-none focus:border-volt transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="font-display text-xs text-steel-400 uppercase tracking-widest block mb-2">
-                    Телефон
-                  </label>
-                  <input
-                    type="tel"
-                    placeholder="+7 (___) ___-__-__"
-                    className="w-full bg-steel-700 border border-steel-500 text-white placeholder-steel-400 px-4 py-3 font-ibm focus:outline-none focus:border-volt transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="font-display text-xs text-steel-400 uppercase tracking-widest block mb-2">
-                    Опишите задачу
-                  </label>
+                  <label className="block text-[10px] uppercase tracking-widest mb-2 text-[#888]">ЗАДАЧА</label>
                   <textarea
-                    rows={4}
-                    placeholder="Нужно заменить проводку в квартире..."
-                    className="w-full bg-steel-700 border border-steel-500 text-white placeholder-steel-400 px-4 py-3 font-ibm focus:outline-none focus:border-volt transition-colors resize-none"
+                    rows={3}
+                    placeholder="Опишите что нужно сделать..."
+                    className="w-full bg-transparent border-[2px] border-[#0A0A0A] px-4 py-3 text-sm focus:outline-none focus:border-[#E63022] transition-colors resize-none placeholder-[#bbb]"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-volt text-steel-900 font-display font-bold uppercase tracking-widest py-4 hover:bg-volt-light transition-colors glow-volt text-sm"
+                  className="w-full bg-[#0A0A0A] text-[#F0EDE8] py-4 text-xs uppercase tracking-widest brutal-btn"
+                  style={UNB}
                 >
-                  Отправить заявку
+                  Отправить заявку →
                 </button>
               </form>
             </div>
@@ -424,35 +345,28 @@ export default function Index() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-steel-900 border-t border-steel-600/30 py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <footer className="py-6">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-volt flex items-center justify-center">
-              <Icon name="Zap" size={13} className="text-steel-900" />
+            <div className="w-6 h-6 bg-[#E63022] border-2 border-[#0A0A0A] flex items-center justify-center">
+              <Icon name="Zap" size={12} className="text-[#F0EDE8]" />
             </div>
-            <span className="font-display font-bold text-sm tracking-wider text-white uppercase">
-              Электрик
-            </span>
+            <span className="text-xs font-black uppercase tracking-widest" style={UNB}>ЭЛЕКТРИК</span>
           </div>
-          <p className="font-ibm text-steel-400 text-xs text-center">
-            © 2024 Профессиональный электрик. Все права защищены.
-          </p>
-          <a
-            href={`tel:${PHONE.replace(/\D/g, "")}`}
-            className="font-display text-volt text-sm hover:text-volt-light transition-colors uppercase tracking-wider"
-          >
+          <p className="text-[10px] uppercase tracking-widest text-[#888]">© 2024 — Все права защищены</p>
+          <a href={`tel:${PHONE.replace(/\D/g, "")}`} className="text-xs hover:text-[#E63022] transition-colors uppercase tracking-widest">
             {PHONE}
           </a>
         </div>
       </footer>
 
-      {/* Плавающая кнопка звонка (мобильная) */}
+      {/* Floating call — mobile */}
       <a
         href={`tel:${PHONE.replace(/\D/g, "")}`}
-        className="fixed bottom-6 right-6 z-50 md:hidden w-14 h-14 bg-volt flex items-center justify-center glow-volt hover:scale-110 transition-transform duration-200"
+        className="fixed bottom-5 right-5 z-50 md:hidden w-14 h-14 bg-[#E63022] border-[3px] border-[#0A0A0A] flex items-center justify-center brutal-btn-red"
         aria-label="Позвонить"
       >
-        <Icon name="Phone" size={24} className="text-steel-900" />
+        <Icon name="Phone" size={22} className="text-[#F0EDE8]" />
       </a>
     </div>
   );
