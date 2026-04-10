@@ -260,7 +260,7 @@ export default function Index() {
                 { icon: "Phone",  label: "Телефон", value: PHONE,                   href: `tel:${PHONE.replace(/\D/g,"")}` },
                 { icon: "Mail",   label: "Email",   value: "elektrik@example.ru",   href: "mailto:elektrik@example.ru" },
                 { icon: "MapPin", label: "Район",   value: "Уфа и Республика Башкортостан", href: null },
-                { icon: "Clock",  label: "График",  value: "Пн–Вс 8:00–22:00 / аварийно 24/7", href: null },
+                { icon: "Clock",  label: "График",  value: "Круглосуточно, без выходных", href: null },
               ].map((c, i) => (
                 <div key={i} className="flex items-start gap-5 py-5">
                   <div className="w-10 h-10 bg-steel-700 border border-volt/30 flex items-center justify-center shrink-0">
