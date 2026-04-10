@@ -123,8 +123,8 @@ export default function Index() {
 
             <h1 className="font-display text-6xl md:text-8xl font-bold text-white leading-none uppercase mb-6 anim"
               style={{ animationDelay: "0.1s" }}>
-              Электро<br />
-              <span className="text-volt text-glow">монтаж</span>
+              Электрик<br />
+              <span className="text-volt text-glow">Уфа 24/7</span>
             </h1>
 
             <p className="font-ibm text-steel-300 text-lg leading-relaxed mb-10 max-w-md anim"
